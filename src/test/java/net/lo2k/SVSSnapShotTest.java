@@ -39,6 +39,9 @@ public class SVSSnapShotTest extends TestCase {
 		return new TestSuite(SVSSnapShotTest.class);
 	}
 
+	/**
+	 * versioning test with a serializable object
+	 */
 	public void testObject() {
 
 		SVSPatcher<Person> patcher = new SVSPatcher<Person>();
@@ -76,7 +79,7 @@ public class SVSSnapShotTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 * test diff creation and patch
 	 */
 	public void testDiff() {
 		SVSPatcher<String> patcher = new SVSPatcher<String>();
@@ -86,6 +89,9 @@ public class SVSSnapShotTest extends TestCase {
 		patcher.patchWith("Ou est l'avion ? saperlipopette !", patch);
 	}
 
+	/**
+	 * test patch on a list
+	 */
 	public void testListDiff() {
 		SVSPatcher<LinkedList<String>> patcher = new SVSPatcher<LinkedList<String>>();
 
@@ -116,6 +122,11 @@ public class SVSSnapShotTest extends TestCase {
 		assertEquals("Gateau", listPatched.get(4));
 	}
 
+	/**
+	 * utility for unit testing
+	 * @param url
+	 * @return
+	 */
 	public String getStringFromUrl(String url) {
 		URL webContent = null;
 		try {
@@ -149,6 +160,11 @@ public class SVSSnapShotTest extends TestCase {
 		return totalLine;
 	}
 
+	/**
+	 * utility to make random modifications on a string
+	 * @param string
+	 * @return
+	 */
 	public String randomModif(String string) {
 
 		String[] randomReplace = { "cat", "dog", "horse", "funk", "lady gaga" };
@@ -174,6 +190,9 @@ public class SVSSnapShotTest extends TestCase {
 		return res;
 	}
 
+	/**
+	 * test versioning
+	 */
 	public void testVersionned() {
 		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
 
@@ -214,6 +233,9 @@ public class SVSSnapShotTest extends TestCase {
 	 * //verify hash assertEquals(firstRev, patcher.getHashFor(orig)); }
 	 */
 
+	/**
+	 * test patch on a repository
+	 */
 	public void testPatch() {
 		SVSRepository<String> repository = new SVSRepositoryImpl<String>();
 
@@ -234,6 +256,9 @@ public class SVSSnapShotTest extends TestCase {
 		assertEquals(expandedWow3Hash, repository.getLatestRevNumber());
 	}
 
+	/**
+	 * test to retrieve a version before a certain date
+	 */
 	public void testDate() {
 		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
 

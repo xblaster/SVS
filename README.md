@@ -11,8 +11,8 @@ java object in memory. This tool tool provide:
 * An easy to use API to make snapshots
 * Easy way to load and save versions of an object/structure.
 
-Usage
-=====
+Repository usage
+================
 
 How it works ? Just create a SVSRepository
 
@@ -47,4 +47,42 @@ You can also patch your work ;)
 	assertEquals(expandedWow3Hash, repository.getLatestRevNumber());
 	
 Take a look at unit tests to see all possibilities of the library. 
+
+Patcher usage
+=============
+
+Small usage of "patching" possibilies
+
+		SVSPatcher<Person> patcher = new SVSPatcher<Person>();
+
+		// first
+		Person p = new Person();
+		p.setName("Bob");
+		p.setAge(17);
+		p.setTel("1545645646");
+		p.setAdress("3 rue du gymnase\n89245 Bidonville");
+
+		// modified person
+		Person p1 = new Person();
+		p1.setName("Bob");
+		p1.setAge(18);
+		p1.setTel("33355566");
+		p1.setAdress("3 rue du gymnase\n33333 Bidonville");
+
+		// patch
+		SVSPatch<Person> patch = patcher.makeSVSPatchFor(p, p1);
+
+		// object to patch (slightly different)
+		Person pToPatch = new Person();
+		pToPatch.setName("Bob José");
+		pToPatch.setAge(17);
+		pToPatch.setTel("1545645646");
+		pToPatch.setAdress("9 rue du gymnase\n89245 Bidonville");
+
+		Person patchedPerson = patcher.patchWith(pToPatch, patch);
+
+		assertEquals("33355566", patchedPerson.getTel());
+		assertEquals(18, patchedPerson.getAge());
+		assertEquals("9 rue du gymnase\n33333 Bidonville",
+				patchedPerson.getAdress());
 

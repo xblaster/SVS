@@ -215,23 +215,23 @@ public class SVSSnapShotTest extends TestCase {
 	 */
 
 	public void testPatch() {
-		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
+		SVSRepository<String> repository = new SVSRepositoryImpl<String>();
 
-		String rev1 = beacon.makeSnapshot("Wow");
-		String expanded = beacon.makeSnapshot("World of Warcraft");
-		beacon.makeSnapshot("World of Warcraft\n2");
-		String expandedWow3Hash = beacon.makeSnapshot("World of Warcraft\n3");
-		beacon.makeSnapshot("Wow\n3");
+		String rev1 = repository.makeSnapshot("Wow");
+		String expanded = repository.makeSnapshot("World of Warcraft");
+		repository.makeSnapshot("World of Warcraft\n2");
+		String expandedWow3Hash = repository.makeSnapshot("World of Warcraft\n3");
+		repository.makeSnapshot("Wow\n3");
 
 		// create patch -Wow +World of Warcraft
-		SVSPatch<String> patch = beacon.getSVSPatchBeetween(rev1, expanded);
+		SVSPatch<String> patch = repository.getSVSPatchBeetween(rev1, expanded);
 
 		// try to apply it on "Wow 3"
-		beacon.applyPatch(patch);
-		assertEquals("World of Warcraft\n3", beacon.getLatestSnapshot());
+		repository.applyPatch(patch);
+		assertEquals("World of Warcraft\n3", repository.getLatestSnapshot());
 
 		// verify that hash is identical to previous histo "World of Warcraft 3"
-		assertEquals(expandedWow3Hash, beacon.getLatestRevNumber());
+		assertEquals(expandedWow3Hash, repository.getLatestRevNumber());
 	}
 
 	public void testDate() {

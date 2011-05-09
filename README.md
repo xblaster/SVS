@@ -46,6 +46,22 @@ You can also patch your work ;)
 	// verify that hash is identical to previous histo "World of Warcraft 3"
 	assertEquals(expandedWow3Hash, repository.getLatestRevNumber());
 	
+Save and load your work
+
+	//save
+	repository.saveToFile(new File("test.svs"));
+	
+	//load
+	repository.loadFromFile(new File("test.svs"));
+	
+And retrieve complete history
+
+	repository.getLatestSnapshot()
+	repository.getHistory()
+	
+	repository.restoreObjectBeforeDate(date);
+	
+	
 Take a look at unit tests to see all possibilities of the library. 
 
 Patcher usage

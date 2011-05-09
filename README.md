@@ -1,12 +1,18 @@
-SVS documentation
-=================
+SVS
+===
+
+Warning : this is an alpha release. It works but we can add a bunch of new features ;). 
+Please feel free fork and contribute.
 
 SVS (Small Version System) is a small versioning tool to handle different version of
 java object in memory. This tool tool provide:
 
 * A small memory print
 * An easy to use API to make snapshots
-* Easy way to load and save versions of an object/structures
+* Easy way to load and save versions of an object/structure.
+
+Usage
+=====
 
 How it works ? Just create a SVSRepository
 
@@ -40,5 +46,5 @@ You can also patch your work ;)
 	// verify that hash is identical to previous histo "World of Warcraft 3"
 	assertEquals(expandedWow3Hash, repository.getLatestRevNumber());
 	
-Take a look on unit tests to see all possibilities of the library. 
+Take a look at unit tests to see all possibilities of the library. 
 

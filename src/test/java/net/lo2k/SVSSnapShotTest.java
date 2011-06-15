@@ -283,11 +283,7 @@ public class SVSSnapShotTest extends TestCase {
 	public void testOptimize() {
 		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
 
-		String totalString = "the value 0 if this Byte is equal to " +
-				"the argument Byte; a value less than 0 if this Byte" +
-				" is numerically less than the argument Byte; and a" +
-				" value greater than 0 if this Byte is numerically" +
-				" greater than the argument Byte (signed comparison).";
+		String totalString = getStringFromUrl("http://www.lo2k.net/v7/");
 
 		//String firstRev = beacon.makeSnapshot(totalString);
 		String modifString = "";

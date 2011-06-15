@@ -62,25 +62,24 @@ public class SVSSnapshotRepository<T extends Serializable> implements
 		this.history = history;
 	}
 	
-	private static final int NEAREST_RANGE = 8;
-	private List<String> getNearestRevisionFrom(int index, List<String> revisions) {
+	private static final int NEAREST_RANGE = 12;
+	private List<String> getNearestRevisionFrom(int index, List<String> revisionsList) {
 		List<String> result = new LinkedList<String>();
 		for (int i = index +1 ; i < index + NEAREST_RANGE ; i++) {
 			/*if (i < 0) {
 				break;
 			}*/ //useless in theory
-			if (i >= revisions.size()) {
+			if (i >= revisionsList.size()) {
 				break;
 			}
-			result.add(revisions.get(index));
+			result.add(revisionsList.get(index));
 		}
 		
 		return result;
 	}
 	
 	public void optimize() {
-		@SuppressWarnings("unchecked")
-		LinkedList<String> revisions = new LinkedList(history.keySet());
+		LinkedList<String> revisions = new LinkedList<String>(history.keySet());
 		
 		for (int i = 0; i < revisions.size(); i++) {
 			List<String> nearestRev = getNearestRevisionFrom(i, revisions);
@@ -101,25 +100,39 @@ public class SVSSnapshotRepository<T extends Serializable> implements
 		
 		
 		SVSSnapshot<T> newPatch = snap;
-		
-		//crawl nearestRev for a better patch
-		for (String rev: nearestRev) {
+
+		// crawl nearestRev for a better patch
+		for (String rev : nearestRev) {
+
+			if (string.equals(rev)) { // if same rev
+				break;
+			}
+
 			SVSSnapshot<T> snapshot = history.get(rev);
 			T oldObject = snapshot.getObject(this);
-			
-			SVSPatch<T> newPossiblePatch = localPatcher.makeSVSPatchFor(oldObject, object);
-			
-			SVSSnapshot<T> newPossibleSnapshot = new SVSDeltaSnapshot<T>(newPossiblePatch, rev, this);
-			
-				if (newPossibleSnapshot.getSize() < newPatch.getSize()) {
-					System.out.println("find better candidate reduce by "+(size - newPossibleSnapshot.getSize()));
-					newPatch = newPossibleSnapshot;
-				}
+
+			SVSPatch<T> newPossiblePatch = localPatcher.makeSVSPatchFor(
+					oldObject, object);
+
+			SVSSnapshot<T> newPossibleSnapshot = new SVSDeltaSnapshot<T>(
+					newPossiblePatch, rev, this);
+
+			if (newPossibleSnapshot.getSize() < newPatch.getSize()) {
+				newPatch = newPossibleSnapshot;
+			} else {
+				System.out.println("bad patch. Increase "
+						+ (newPossibleSnapshot.getSize() - newPatch.getSize()));
+			}
 		}
 		
 		if (newPatch!=snap) {
 			//store new patch
+			System.out.println(""+string+" => "+((SVSDeltaSnapshot<T>)newPatch).getFutureRev()+" reduce by "+(size - newPatch.getSize()));
 			history.put(string, newPatch);
 		}
+		
+		
+		
+		
 	}
 }

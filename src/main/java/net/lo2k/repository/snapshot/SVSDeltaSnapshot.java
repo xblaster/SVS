@@ -49,8 +49,8 @@ public class SVSDeltaSnapshot<T extends Serializable> extends SVSSnapshot<T> {
 		SVSPatcher<T> patcher = new SVSPatcher<T>();
 		T patchedObj = patcher.patchWith(futureSnap.getObject(repository),
 				sVSPatch);
-		System.out.println("Patch from " + futureSnap.getRevisionNumber()
-				+ " => " + getRevisionNumber());
+		/*System.out.println("Patch from " + futureSnap.getRevisionNumber()
+				+ " => " + getRevisionNumber());*/
 		return patchedObj;
 	}
 

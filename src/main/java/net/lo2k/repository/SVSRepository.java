@@ -115,6 +115,11 @@ public interface SVSRepository<T extends Serializable> {
 	 * load historization from a file
 	 */
 	SVSRepositoryImpl<T> loadFromFile(File f);
+	
+	/**
+	 * try to optimize the repository and reduce his size
+	 */
+	void optimize();
 
 	/**
 	 * save histo to a file

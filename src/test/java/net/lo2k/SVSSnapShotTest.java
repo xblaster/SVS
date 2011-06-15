@@ -124,6 +124,7 @@ public class SVSSnapShotTest extends TestCase {
 
 	/**
 	 * utility for unit testing
+	 * 
 	 * @param url
 	 * @return
 	 */
@@ -162,6 +163,7 @@ public class SVSSnapShotTest extends TestCase {
 
 	/**
 	 * utility to make random modifications on a string
+	 * 
 	 * @param string
 	 * @return
 	 */
@@ -242,7 +244,8 @@ public class SVSSnapShotTest extends TestCase {
 		String rev1 = repository.makeSnapshot("Wow");
 		String expanded = repository.makeSnapshot("World of Warcraft");
 		repository.makeSnapshot("World of Warcraft\n2");
-		String expandedWow3Hash = repository.makeSnapshot("World of Warcraft\n3");
+		String expandedWow3Hash = repository
+				.makeSnapshot("World of Warcraft\n3");
 		repository.makeSnapshot("Wow\n3");
 
 		// create patch -Wow +World of Warcraft
@@ -275,7 +278,29 @@ public class SVSSnapShotTest extends TestCase {
 
 		assertEquals(beacon.restoreSnapShot(expanded),
 				beacon.restoreObjectBeforeDate(d));
+	}
 
+	public void testOptimize() {
+		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
+
+		String totalString = "the value 0 if this Byte is equal to " +
+				"the argument Byte; a value less than 0 if this Byte" +
+				" is numerically less than the argument Byte; and a" +
+				" value greater than 0 if this Byte is numerically" +
+				" greater than the argument Byte (signed comparison).";
+
+		//String firstRev = beacon.makeSnapshot(totalString);
+		String modifString = "";
+		for (int i = 0; i < 100; i++) {
+			System.out.println(i + " ");
+			modifString = randomModif(totalString);
+			beacon.makeSnapshot(modifString);
+		}
+		
+		System.out.println("original size "+beacon.getSize());
+		
+		beacon.optimize();
+		System.out.println("optimize size "+beacon.getSize());
 	}
 
 }

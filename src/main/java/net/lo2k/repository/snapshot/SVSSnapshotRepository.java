@@ -19,6 +19,11 @@ package net.lo2k.repository.snapshot;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+import net.lo2k.patcher.SVSPatch;
+import net.lo2k.patcher.SVSPatcher;
 
 public class SVSSnapshotRepository<T extends Serializable> implements
 		Serializable {
@@ -55,5 +60,66 @@ public class SVSSnapshotRepository<T extends Serializable> implements
 
 	public void setHistory(HashMap<String, SVSSnapshot<T>> history) {
 		this.history = history;
+	}
+	
+	private static final int NEAREST_RANGE = 8;
+	private List<String> getNearestRevisionFrom(int index, List<String> revisions) {
+		List<String> result = new LinkedList<String>();
+		for (int i = index +1 ; i < index + NEAREST_RANGE ; i++) {
+			/*if (i < 0) {
+				break;
+			}*/ //useless in theory
+			if (i >= revisions.size()) {
+				break;
+			}
+			result.add(revisions.get(index));
+		}
+		
+		return result;
+	}
+	
+	public void optimize() {
+		@SuppressWarnings("unchecked")
+		LinkedList<String> revisions = new LinkedList(history.keySet());
+		
+		for (int i = 0; i < revisions.size(); i++) {
+			List<String> nearestRev = getNearestRevisionFrom(i, revisions);
+			findBettestPatchFor(revisions.get(i),nearestRev);
+		}
+		
+		
+	}
+
+	private void findBettestPatchFor(String string, List<String> nearestRev) {
+		SVSSnapshot<T> snap = history.get(string);
+		
+		SVSPatcher<T> localPatcher = new SVSPatcher<T>();
+		
+		int size = snap.getSize();
+		
+		T object = snap.getObject(this);
+		
+		
+		SVSSnapshot<T> newPatch = snap;
+		
+		//crawl nearestRev for a better patch
+		for (String rev: nearestRev) {
+			SVSSnapshot<T> snapshot = history.get(rev);
+			T oldObject = snapshot.getObject(this);
+			
+			SVSPatch<T> newPossiblePatch = localPatcher.makeSVSPatchFor(oldObject, object);
+			
+			SVSSnapshot<T> newPossibleSnapshot = new SVSDeltaSnapshot<T>(newPossiblePatch, rev, this);
+			
+				if (newPossibleSnapshot.getSize() < newPatch.getSize()) {
+					System.out.println("find better candidate reduce by "+(size - newPossibleSnapshot.getSize()));
+					newPatch = newPossibleSnapshot;
+				}
+		}
+		
+		if (newPatch!=snap) {
+			//store new patch
+			history.put(string, newPatch);
+		}
 	}
 }

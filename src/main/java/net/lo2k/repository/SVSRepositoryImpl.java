@@ -56,7 +56,7 @@ public class SVSRepositoryImpl<T extends Serializable> implements
 		repository = new SVSSnapshotRepository<T>();
 	}
 
-	public void appendToHistory(SVSSnapshot<T> snapshot) {
+	private void appendToHistory(SVSSnapshot<T> snapshot) {
 		snapshots.add(snapshot.getRevisionNumber());
 		repository.put(snapshot);
 	}
@@ -106,7 +106,7 @@ public class SVSRepositoryImpl<T extends Serializable> implements
 	public List<String> getHistory() {
 		return snapshots;
 	}
-
+	
 	@Override
 	public int getSize() {
 		return repository.getSize();
@@ -160,10 +160,6 @@ public class SVSRepositoryImpl<T extends Serializable> implements
 
 	public LinkedList<String> getSnapshots() {
 		return snapshots;
-	}
-
-	public void setSnapshots(LinkedList<String> snapshots) {
-		this.snapshots = snapshots;
 	}
 
 	public SVSSnapshotRepository<T> getRepository() {
@@ -225,6 +221,11 @@ public class SVSRepositoryImpl<T extends Serializable> implements
 	@Override
 	public T restoreObjectBeforeDate(Date d) {
 		return restoreSnapShot(getRevisionBefore(d));
+	}
+
+	@Override
+	public void optimize() {
+		repository.optimize(); 
 	}
 
 }

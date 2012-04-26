@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jérôme Wax <jerome.wax@lo2k.net>
+ * Copyright 2011 Jï¿½rï¿½me Wax <jerome.wax@lo2k.net>
  * http://www.lo2k.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,7 @@ public class SVSSnapShotTest extends TestCase {
 
 		// object to patch (slightly different)
 		Person pToPatch = new Person();
-		pToPatch.setName("Bob José");
+		pToPatch.setName("Bob Josï¿½");
 		pToPatch.setAge(17);
 		pToPatch.setTel("1545645646");
 		pToPatch.setAdress("9 rue du gymnase\n89245 Bidonville");
@@ -74,8 +74,8 @@ public class SVSSnapShotTest extends TestCase {
 
 		assertEquals("33355566", patchedPerson.getTel());
 		assertEquals(18, patchedPerson.getAge());
-		assertEquals("9 rue du gymnase\n33333 Bidonville",
-				patchedPerson.getAdress());
+		assertEquals("9 rue du gymnase\n33333 Bidonville", patchedPerson
+				.getAdress());
 	}
 
 	/**
@@ -124,6 +124,7 @@ public class SVSSnapShotTest extends TestCase {
 
 	/**
 	 * utility for unit testing
+	 * 
 	 * @param url
 	 * @return
 	 */
@@ -136,8 +137,8 @@ public class SVSSnapShotTest extends TestCase {
 		}
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(
-					webContent.openStream()));
+			in = new BufferedReader(new InputStreamReader(webContent
+					.openStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -162,6 +163,7 @@ public class SVSSnapShotTest extends TestCase {
 
 	/**
 	 * utility to make random modifications on a string
+	 * 
 	 * @param string
 	 * @return
 	 */
@@ -193,29 +195,25 @@ public class SVSSnapShotTest extends TestCase {
 	/**
 	 * test versioning
 	 */
-	public void testVersionned() {
-		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
-
-		String totalString = getStringFromUrl("http://www.lo2k.net/v7/");
-
-		String firstRev = beacon.makeSnapshot(totalString);
-		String modifString = "";
-		for (int i = 0; i < 10; i++) {
-			System.out.print(i + " ");
-			modifString = randomModif(totalString);
-			beacon.makeSnapshot(modifString);
-		}
-
-		String orig = beacon.restoreSnapShot(firstRev);
-
-		assertEquals(totalString, orig);
-
-		// beacon.saveToFile(new File("dump.txt"));
-
-		System.out.println("restored");
-		System.out.println("Size :" + beacon.getSize());
-		System.out.println("Original document size :" + orig.length());
-	}
+	/*
+	 * public void testVersionned() { SVSRepository<String> beacon = new
+	 * SVSRepositoryImpl<String>();
+	 * 
+	 * String totalString = getStringFromUrl("http://www.lo2k.net/v7/");
+	 * 
+	 * String firstRev = beacon.makeSnapshot(totalString); String modifString =
+	 * ""; for (int i = 0; i < 10; i++) { System.out.print(i + " "); modifString =
+	 * randomModif(totalString); beacon.makeSnapshot(modifString); }
+	 * 
+	 * String orig = beacon.restoreSnapShot(firstRev);
+	 * 
+	 * assertEquals(totalString, orig);
+	 *  // beacon.saveToFile(new File("dump.txt"));
+	 * 
+	 * System.out.println("restored"); System.out.println("Size :" +
+	 * beacon.getSize()); System.out.println("Original document size :" +
+	 * orig.length()); }
+	 */
 
 	/*
 	 * public void testLoadFromFileIntensive() { String firstRev =
@@ -242,7 +240,8 @@ public class SVSSnapShotTest extends TestCase {
 		String rev1 = repository.makeSnapshot("Wow");
 		String expanded = repository.makeSnapshot("World of Warcraft");
 		repository.makeSnapshot("World of Warcraft\n2");
-		String expandedWow3Hash = repository.makeSnapshot("World of Warcraft\n3");
+		String expandedWow3Hash = repository
+				.makeSnapshot("World of Warcraft\n3");
 		repository.makeSnapshot("Wow\n3");
 
 		// create patch -Wow +World of Warcraft
@@ -258,8 +257,9 @@ public class SVSSnapShotTest extends TestCase {
 
 	/**
 	 * test to retrieve a version before a certain date
+	 * @throws InterruptedException 
 	 */
-	public void testDate() {
+	public void testDate() throws InterruptedException {
 		SVSRepository<String> beacon = new SVSRepositoryImpl<String>();
 
 		beacon.makeSnapshot("Wow");
@@ -267,14 +267,16 @@ public class SVSSnapShotTest extends TestCase {
 
 		Date d = new Date();
 
+		Thread.sleep(100); //just wait a little
+
 		beacon.makeSnapshot("World of Warcraft 34343");
 		beacon.makeSnapshot("World of Warcraft 34343");
 		beacon.makeSnapshot("World of Warcraft 3343433");
 
 		assertEquals(expanded, beacon.getRevisionBefore(d));
 
-		assertEquals(beacon.restoreSnapShot(expanded),
-				beacon.restoreObjectBeforeDate(d));
+		assertEquals(beacon.restoreSnapShot(expanded), beacon
+				.restoreObjectBeforeDate(d));
 
 	}
 

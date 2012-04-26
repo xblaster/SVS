@@ -1,8 +1,6 @@
 /*
- * Diff Match and Patch
- *
- * Copyright 2006 Google Inc.
- * http://code.google.com/p/google-diff-match-patch/
+ * This class is largely inspired by
+ * fraser@google.com (Neil Fraser) in google diff match patch 
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +32,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
- * Functions for diff, match and patch.
- * Computes the difference between two texts to create a patch.
- * Applies the patch onto another text, allowing for errors.
- *
- * @author fraser@google.com (Neil Fraser)
+ * This class is largely inspired by
+ * fraser@google.com (Neil Fraser) in google diff match patch 
  */
 
 /**

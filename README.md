@@ -1,8 +1,15 @@
 SVS
 ===
 
-Warning : this is an alpha release. It works but we can add a bunch of new features ;). 
 Please feel free fork and contribute.
+
+UPDATE : SVS is now available on maven central repository
+
+	<dependency>
+		<groupId>net.lo2k</groupId>
+		<artifactId>SVS</artifactId>
+		<version>0.3</version>
+	</dependency>
 
 SVS (Small Version System) is a small versioning tool to handle different version of
 java object in memory. This tool tool provide:
@@ -90,7 +97,7 @@ Small usage of "patching" possibilies
 
 		// object to patch (slightly different)
 		Person pToPatch = new Person();
-		pToPatch.setName("Bob José");
+		pToPatch.setName("Bob Josï¿½");
 		pToPatch.setAge(17);
 		pToPatch.setTel("1545645646");
 		pToPatch.setAdress("9 rue du gymnase\n89245 Bidonville");
